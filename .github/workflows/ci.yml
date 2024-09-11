@@ -22,8 +22,8 @@ jobs:
             with:
               dotnet-version: 8.0.x
           - name: Restore dependencies
-            run: dotnet restore src
+            run: dotnet restore
           - name: Build
-            run: dotnet build src --no-restore --configuration Release
+            run: dotnet build --no-restore --configuration Release
           - name: Run tests
-            uses: Particular/run-tests-action@v1.7.0
+            run: dotnet test --no-build --configuration Release --logger "GitHubActions"
