@@ -1,8 +1,9 @@
 namespace SimpleBusTests;
 
-public static class Tests
+[TestFixture]
+public class Tests
 {
-    [Fact]
+    [Test]
     public static async Task ReceiveMessage()
     {
         // arrange
@@ -28,6 +29,6 @@ public static class Tests
         }
 
         // assert
-        Assert.Equal(sent.Int32Field, received?.Int32Field);
+        Assert.That(received?.Int32Field, Is.EqualTo(sent.Int32Field));
     }
 }
