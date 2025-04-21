@@ -9,6 +9,7 @@ public sealed class XmlMessageSerializer : ISerializeMessages
         var serializer = new XmlSerializer(typeof(TMessage));
         using var writer = new StringWriter();
         serializer.Serialize(writer, message);
+
         return writer.ToString();
     }
 

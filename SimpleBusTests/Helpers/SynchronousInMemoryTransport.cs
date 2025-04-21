@@ -2,28 +2,25 @@ namespace SimpleBusTests.Helpers;
 
 public sealed class SynchronousInMemoryTransport : ITransportMessages
 {
-    private readonly List<Registration> registrations = new();
+    private readonly List<Registration> registrations = [];
 
     public void Register(string destinationEndpointName, string messageType, Func<string, Task> receiver) =>
-        this.registrations.Add(new Registration(destinationEndpointName, messageType, receiver));
+        registrations.Add(new Registration(destinationEndpointName, messageType, receiver));
 
     public Task<IAsyncDisposable> StartReceiving() => Task.FromResult<IAsyncDisposable>(new AsyncDisposable());
 
     public void Send(string destinationEndpointName, string messageType, string message)
     {
-        var matchingRegistrations = this.registrations
-            .Where(registration =>
-                registration.DestinationEndpointName == destinationEndpointName &&
-                registration.MessageType == messageType)
+        var matchingRegistrations = registrations
+            .Where(registration => registration.DestinationEndpointName == destinationEndpointName && registration.MessageType == messageType)
             .ToList();
 
         if (matchingRegistrations.Count == 0)
         {
-            throw new InvalidOperationException(
-                $"The '{destinationEndpointName}' endpoint does not receive messages of type '{messageType}'.");
+            throw new InvalidOperationException($"The '{destinationEndpointName}' endpoint does not receive messages of type '{messageType}'.");
         }
 
-        foreach (var registration in this.registrations)
+        foreach (var registration in registrations)
         {
             registration.Receiver(message);
         }
