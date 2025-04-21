@@ -16,14 +16,14 @@ public sealed class Endpoint
     public void Register<TMessage>(Func<TMessage, Task> receiver)
     {
         var type = typeof(TMessage).FullName ?? throw new InvalidOperationException("Message type full name is null.");
-        this.transport.Register(this.name, type, message => receiver(this.serializer.Deserialize<TMessage>(message)));
+        transport.Register(name, type, message => receiver(serializer.Deserialize<TMessage>(message)));
     }
 
     public void Send<TMessage>(string destinationEndpointName, TMessage message)
     {
         var type = typeof(TMessage).FullName ?? throw new InvalidOperationException("Message type full name is null.");
-        this.transport.Send(destinationEndpointName, type, this.serializer.Serialize(message));
+        transport.Send(destinationEndpointName, type, serializer.Serialize(message));
     }
 
-    public Task<IAsyncDisposable> StartReceiving() => this.transport.StartReceiving();
+    public Task<IAsyncDisposable> StartReceiving() => transport.StartReceiving();
 }
