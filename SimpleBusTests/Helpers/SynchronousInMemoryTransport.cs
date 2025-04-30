@@ -2,7 +2,7 @@ namespace SimpleBusTests.Helpers;
 
 public sealed class SynchronousInMemoryTransport : ITransportMessages
 {
-    private readonly List<Registration> registrations = [];
+    readonly List<Registration> registrations = [];
 
     public void Register(string destinationEndpointName, string messageType, Func<string, Task> receiver) =>
         registrations.Add(new Registration(destinationEndpointName, messageType, receiver));
@@ -26,9 +26,9 @@ public sealed class SynchronousInMemoryTransport : ITransportMessages
         }
     }
 
-    private record Registration(string DestinationEndpointName, string MessageType, Func<string, Task> Receiver);
+    record Registration(string DestinationEndpointName, string MessageType, Func<string, Task> Receiver);
 
-    private class AsyncDisposable : IAsyncDisposable
+    class AsyncDisposable : IAsyncDisposable
     {
         public ValueTask DisposeAsync() => ValueTask.CompletedTask;
     }
